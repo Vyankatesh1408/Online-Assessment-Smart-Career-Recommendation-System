@@ -49,3 +49,83 @@ CREATE TABLE categories (
     name VARCHAR(100) NOT NULL UNIQUE
 
 );
+
+
+
+CREATE TABLE assessments (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    title VARCHAR(100) NOT NULL,
+
+    description TEXT,
+
+    duration INT NOT NULL,
+
+    total_marks INT NOT NULL,
+
+    category_id BIGINT NOT NULL,
+
+    created_by BIGINT NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_assessment_category
+        FOREIGN KEY(category_id)
+        REFERENCES categories(id),
+
+    CONSTRAINT fk_assessment_user
+        FOREIGN KEY(created_by)
+        REFERENCES users(id)
+
+);
+
+
+
+CREATE TABLE questions (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    assessment_id BIGINT NOT NULL,
+
+    question_text TEXT NOT NULL,
+
+    difficulty ENUM('EASY','MEDIUM','HARD'),
+
+    marks INT DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_question_assessment
+        FOREIGN KEY (assessment_id)
+        REFERENCES assessments(id)
+
+);
+
+
+
+
+
+CREATE TABLE options (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    question_id BIGINT NOT NULL,
+
+    option_text VARCHAR(255) NOT NULL,
+
+    is_correct BOOLEAN DEFAULT FALSE,
+
+    CONSTRAINT fk_option_question
+        FOREIGN KEY(question_id)
+        REFERENCES questions(id)
+
+);
+
+
+
+
+
+
+
+
