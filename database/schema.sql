@@ -126,6 +126,121 @@ CREATE TABLE options (
 
 
 
+CREATE TABLE student_answers (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id BIGINT NOT NULL,
+
+    question_id BIGINT NOT NULL,
+
+    selected_option_id BIGINT NOT NULL,
+
+    answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_answer_student
+        FOREIGN KEY(student_id)
+        REFERENCES users(id),
+
+    CONSTRAINT fk_answer_question
+        FOREIGN KEY(question_id)
+        REFERENCES questions(id),
+
+    CONSTRAINT fk_answer_option
+        FOREIGN KEY(selected_option_id)
+        REFERENCES options(id)
+
+);
 
 
 
+
+
+CREATE TABLE results (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id BIGINT NOT NULL,
+
+    assessment_id BIGINT NOT NULL,
+
+    score INT NOT NULL,
+
+    percentage DECIMAL(5,2),
+
+    total_questions INT,
+
+    correct_answers INT,
+
+    wrong_answers INT,
+
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_result_student
+        FOREIGN KEY(student_id)
+        REFERENCES users(id),
+
+    CONSTRAINT fk_result_assessment
+        FOREIGN KEY(assessment_id)
+        REFERENCES assessments(id)
+
+);
+
+
+CREATE TABLE careers (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    career_name VARCHAR(100) NOT NULL UNIQUE,
+
+    description TEXT,
+
+    required_skills TEXT
+
+);
+
+
+
+
+CREATE TABLE recommendations (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    student_id BIGINT NOT NULL,
+
+    career_id BIGINT NOT NULL,
+
+    confidence DECIMAL(5,2),
+
+    recommended_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_recommendation_student
+        FOREIGN KEY(student_id)
+        REFERENCES users(id),
+
+    CONSTRAINT fk_recommendation_career
+        FOREIGN KEY(career_id)
+        REFERENCES careers(id)
+
+);
+
+
+
+
+CREATE TABLE learning_resources (
+
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    career_id BIGINT NOT NULL,
+
+    title VARCHAR(150) NOT NULL,
+
+    resource_url VARCHAR(500),
+
+    resource_type ENUM('YOUTUBE','COURSE','DOCUMENTATION','BOOK'),
+
+    CONSTRAINT fk_learning_resource_career
+        FOREIGN KEY(career_id)
+        REFERENCES careers(id)
+
+);
