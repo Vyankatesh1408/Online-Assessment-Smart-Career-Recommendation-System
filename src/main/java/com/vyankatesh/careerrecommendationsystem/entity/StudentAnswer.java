@@ -22,7 +22,15 @@ public class StudentAnswer {
     @JoinColumn(name = "selected_option_id", nullable = false)
     private Option selectedOption;
 
-    public Question getQuestion() {
+    public Option getSelectedOption() {
+		return selectedOption;
+	}
+
+	public void setSelectedOption(Option selectedOption) {
+		this.selectedOption = selectedOption;
+	}
+
+	public Question getQuestion() {
 		return question;
 	}
 

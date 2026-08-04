@@ -20,7 +20,15 @@ public class Option {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    public Option() {
+    public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	public Option() {
     }
 
     public Long getId() {

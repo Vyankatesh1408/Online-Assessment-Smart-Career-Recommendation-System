@@ -21,7 +21,15 @@ public class Recommendation {
     @JoinColumn(name = "career_id", nullable = false)
     private Career career;
 
-    public Result getResult() {
+    public Career getCareer() {
+		return career;
+	}
+
+	public void setCareer(Career career) {
+		this.career = career;
+	}
+
+	public Result getResult() {
 		return result;
 	}
 
