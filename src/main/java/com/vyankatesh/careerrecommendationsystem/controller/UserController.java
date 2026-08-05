@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import com.vyankatesh.careerrecommendationsystem.entity.User;
+import com.vyankatesh.careerrecommendationsystem.dto.request.UserRequestDTO;
+import com.vyankatesh.careerrecommendationsystem.dto.response.UserResponseDTO;
 import com.vyankatesh.careerrecommendationsystem.service.UserService;
 
 @RestController
@@ -20,23 +21,24 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public UserResponseDTO saveUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.saveUser(userRequestDTO);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public UserResponseDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public UserResponseDTO updateUser(@PathVariable Long id,
+                                      @RequestBody UserRequestDTO userRequestDTO) {
+        return userService.updateUser(id, userRequestDTO);
     }
 
     @DeleteMapping("/{id}")

@@ -2,17 +2,18 @@ package com.vyankatesh.careerrecommendationsystem.service;
 
 import java.util.List;
 
-import com.vyankatesh.careerrecommendationsystem.entity.User;
+import com.vyankatesh.careerrecommendationsystem.dto.request.UserRequestDTO;
+import com.vyankatesh.careerrecommendationsystem.dto.response.UserResponseDTO;
 
 public interface UserService {
 
-    User saveUser(User user);
+    UserResponseDTO saveUser(UserRequestDTO userRequestDTO);
 
-    User getUserById(Long id);
+    UserResponseDTO getUserById(Long id);
 
-    List<User> getAllUsers();
+    List<UserResponseDTO> getAllUsers();
 
-    User updateUser(Long id, User user);
+    UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO);
 
     void deleteUser(Long id);
 
