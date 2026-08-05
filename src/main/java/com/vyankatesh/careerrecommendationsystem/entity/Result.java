@@ -3,7 +3,12 @@ package com.vyankatesh.careerrecommendationsystem.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "results")
+@Table(
+    name = "results",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "assessment_id"})
+    }
+)
 public class Result {
 
     @Id
@@ -25,16 +30,18 @@ public class Result {
     private Assessment assessment;
     
     @ManyToOne
-    @JoinColumn(name = "career_id", nullable = false)
-    private Career career;
+    @JoinColumn(name = "stream_id", nullable = false)
+    private Stream stream;
+    
+    
 
-    public Career getCareer() {
-		return career;
-	}
+    public Stream getStream() {
+        return stream;
+    }
 
-	public void setCareer(Career career) {
-		this.career = career;
-	}
+    public void setStream(Stream stream) {
+        this.stream = stream;
+    }
 
 	public Assessment getAssessment() {
 		return assessment;

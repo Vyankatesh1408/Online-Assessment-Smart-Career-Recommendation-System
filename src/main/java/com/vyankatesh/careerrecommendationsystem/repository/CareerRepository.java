@@ -11,5 +11,18 @@ public interface CareerRepository extends JpaRepository<Career, Long> {
     Optional<Career> findByCareerName(String careerName);
 
     boolean existsByCareerName(String careerName);
-
+    
+    
+    /*@Query("""
+    		SELECT c
+    		FROM Career c
+    		WHERE c.minPercentage <= :percentage
+    		AND c.maxPercentage >= :percentage
+    		""")
+    		Optional<Career> findRecommendedCareer(@Param("percentage") Double percentage);
+	*/
+    
+    Optional<Career> findByMinPercentageLessThanEqualAndMaxPercentageGreaterThanEqual(
+            Double percentage1,
+            Double percentage2);
 }
