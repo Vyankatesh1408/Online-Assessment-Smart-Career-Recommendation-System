@@ -12,4 +12,5 @@ public interface StudentAnswerRepository extends JpaRepository<StudentAnswer, Lo
 
     List<StudentAnswer> findByQuestionAssessmentId(Long assessmentId);
 
+    List<StudentAnswer> findByUserIdAndQuestionAssessmentId(Long userId, Long assessmentId);
 }

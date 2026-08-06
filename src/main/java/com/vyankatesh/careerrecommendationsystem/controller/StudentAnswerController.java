@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.vyankatesh.careerrecommendationsystem.entity.StudentAnswer;
 import com.vyankatesh.careerrecommendationsystem.service.StudentAnswerService;
+import com.vyankatesh.careerrecommendationsystem.dto.request.StudentAnswerRequestDTO;
 
 @RestController
 @RequestMapping("/api/student-answers")
@@ -22,6 +23,14 @@ public class StudentAnswerController {
     @ResponseStatus(HttpStatus.CREATED)
     public StudentAnswer saveStudentAnswer(@RequestBody StudentAnswer studentAnswer) {
         return studentAnswerService.saveStudentAnswer(studentAnswer);
+    }
+    
+    @PostMapping("/submit")
+    @ResponseStatus(HttpStatus.OK)
+    public void submitAssessment(@RequestBody List<StudentAnswerRequestDTO> answers) {
+
+        studentAnswerService.submitAssessment(answers);
+
     }
 
     @GetMapping("/{id}")

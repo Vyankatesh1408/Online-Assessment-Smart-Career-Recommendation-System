@@ -63,7 +63,7 @@ public class ResultServiceImpl implements ResultService {
 
         // Get Student Answers
         List<StudentAnswer> studentAnswers =
-                studentAnswerRepository.findByQuestionAssessmentId(assessmentId);
+                studentAnswerRepository.findByUserIdAndQuestionAssessmentId(userId, assessmentId);          studentAnswerRepository.findByQuestionAssessmentId(assessmentId);
 
         if (studentAnswers.isEmpty()) {
             throw new ResourceNotFoundException(
