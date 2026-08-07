@@ -1,3 +1,10 @@
+const userId = localStorage.getItem("userId");
+const fullName = localStorage.getItem("fullName");
+
+if (!userId || !fullName) {
+    window.location.href = "login.html";
+}
+
 const questionContainer = document.getElementById("questionContainer");
 
 async function loadQuestions() {
@@ -18,7 +25,7 @@ async function loadQuestions() {
 
         let optionHtml = "";
 
-        options.forEach(function (option) {
+        options.forEach(option => {
 
             optionHtml += `
                 <div class="form-check">
@@ -46,11 +53,7 @@ async function loadQuestions() {
 
                 <div class="card-body">
 
-                    <h5>
-
-                        ${question.questionText}
-
-                    </h5>
+                    <h5>${question.questionText}</h5>
 
                     ${optionHtml}
 
@@ -59,25 +62,23 @@ async function loadQuestions() {
             </div>
 
         `;
+
     }
 
 }
 
 loadQuestions();
+
 const submitBtn = document.getElementById("submitBtn");
 
 submitBtn.addEventListener("click", async function () {
 
-	alert("Button Clicked");
-	
     const userId = localStorage.getItem("userId");
-
-	alert(userId);
 
     const answers = [];
 
     const questions = await fetch("http://localhost:8080/api/questions")
-            .then(response => response.json());
+        .then(response => response.json());
 
     questions.forEach(question => {
 
@@ -90,9 +91,7 @@ submitBtn.addEventListener("click", async function () {
             answers.push({
 
                 userId: Number(userId),
-
                 questionId: question.id,
-
                 optionId: Number(selectedOption.value)
 
             });
@@ -101,18 +100,68 @@ submitBtn.addEventListener("click", async function () {
 
     });
 
-	alert(answers.length);
+    if (answers.length === 0) {
 
-	const response = await fetch("http://localhost:8080/api/student-answers/submit", {
+        alert("Please select at least one answer.");
 
-   	 	method: "POST",
+        return;
 
-   	 	headers: {
-        	"Content-Type": "application/json"
-    	},
+    }
 
-    	body: JSON.stringify(answers)
+    const confirmSubmit = confirm(
+        "Are you sure you want to submit the assessment?\n\nAfter submission, you cannot change your answers."
+    );
 
-	});
+    if (!confirmSubmit) {
+        return;
+    }
 
-	alert("Answers Saved Successfully");
+    try {
+
+        const answerResponse = await fetch(
+            "http://localhost:8080/api/student-answers/submit",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(answers)
+
+            }
+        );
+
+        if (!answerResponse.ok) {
+
+            throw new Error("Failed to save answers.");
+
+        }
+
+        const resultResponse = await fetch(
+            `http://localhost:8080/api/results/calculate/${userId}/1`,
+            {
+
+                method: "POST"
+
+            }
+        );
+
+        if (!resultResponse.ok) {
+
+            throw new Error("Failed to calculate result.");
+
+        }
+
+        window.location.href = "result.html";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Something went wrong. Please try again.");
+
+    }
+
+});

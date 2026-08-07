@@ -3,7 +3,7 @@ package com.vyankatesh.careerrecommendationsystem.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
+import com.vyankatesh.careerrecommendationsystem.dto.response.ResultResponseDTO;
 import com.vyankatesh.careerrecommendationsystem.entity.Assessment;
 import com.vyankatesh.careerrecommendationsystem.entity.Result;
 import com.vyankatesh.careerrecommendationsystem.entity.Stream;
@@ -17,7 +17,6 @@ import com.vyankatesh.careerrecommendationsystem.repository.StreamRepository;
 import com.vyankatesh.careerrecommendationsystem.repository.StudentAnswerRepository;
 import com.vyankatesh.careerrecommendationsystem.repository.UserRepository;
 import com.vyankatesh.careerrecommendationsystem.service.ResultService;
-
 @Service
 public class ResultServiceImpl implements ResultService {
 
@@ -42,7 +41,7 @@ public class ResultServiceImpl implements ResultService {
 
  
     @Override
-    public Result calculateResult(Long userId, Long assessmentId) {
+    public ResultResponseDTO calculateResult(Long userId, Long assessmentId) {
 
         // Check User
         User user = userRepository.findById(userId)
@@ -112,7 +111,16 @@ public class ResultServiceImpl implements ResultService {
         result.setStream(stream);
 
         // Save Result
-        return resultRepository.save(result);
+        Result savedResult = resultRepository.save(result);
+
+        ResultResponseDTO responseDTO = new ResultResponseDTO();
+
+        responseDTO.setFullName(savedResult.getUser().getFullName());
+        responseDTO.setScore(savedResult.getScore());
+        responseDTO.setPercentage(savedResult.getPercentage());
+        responseDTO.setStreamName(savedResult.getStream().getStreamName());
+
+        return responseDTO;
     }
 
     @Override
@@ -127,15 +135,25 @@ public class ResultServiceImpl implements ResultService {
         return resultRepository.findAll();
     }
 
+    
     @Override
-    public Result getResultByUserAndAssessment(Long userId, Long assessmentId) {
-        return resultRepository
-                .findByUserIdAndAssessmentId(userId, assessmentId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Result not found for user id "
-                                        + userId
-                                        + " and assessment id "
-                                        + assessmentId));
+    public ResultResponseDTO getResultByUserAndAssessment(Long userId, Long assessmentId) {
+    	Result result = resultRepository
+    	        .findByUserIdAndAssessmentId(userId, assessmentId)
+    	        .orElseThrow(() ->
+    	                new ResourceNotFoundException(
+    	                        "Result not found for user id "
+    	                                + userId
+    	                                + " and assessment id "
+    	                                + assessmentId));
+
+    	ResultResponseDTO responseDTO = new ResultResponseDTO();
+
+    	responseDTO.setFullName(result.getUser().getFullName());
+    	responseDTO.setScore(result.getScore());
+    	responseDTO.setPercentage(result.getPercentage());
+    	responseDTO.setStreamName(result.getStream().getStreamName());
+
+    	return responseDTO;
     }
 }
