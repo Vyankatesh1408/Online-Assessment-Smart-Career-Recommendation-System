@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.vyankatesh.careerrecommendationsystem.entity.Result;
 import com.vyankatesh.careerrecommendationsystem.service.ResultService;
-
+import com.vyankatesh.careerrecommendationsystem.dto.response.ResultResponseDTO;
 @RestController
 @RequestMapping("/api/results")
 public class ResultController {
@@ -18,7 +18,7 @@ public class ResultController {
     }
 
     @PostMapping("/calculate/{userId}/{assessmentId}")
-    public Result calculateResult(@PathVariable Long userId,
+    public ResultResponseDTO calculateResult(@PathVariable Long userId,
                                   @PathVariable Long assessmentId) {
 
         return resultService.calculateResult(userId, assessmentId);
@@ -35,7 +35,7 @@ public class ResultController {
     }
 
     @GetMapping("/user/{userId}/assessment/{assessmentId}")
-    public Result getResultByUserAndAssessment(@PathVariable Long userId,
+    public ResultResponseDTO getResultByUserAndAssessment(@PathVariable Long userId,
                                                @PathVariable Long assessmentId) {
 
         return resultService.getResultByUserAndAssessment(userId, assessmentId);
