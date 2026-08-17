@@ -25,6 +25,7 @@ public class ResultServiceImpl implements ResultService {
     private final UserRepository userRepository;
     private final AssessmentRepository assessmentRepository;
     private final StreamRepository streamRepository;
+  
 
     public ResultServiceImpl(ResultRepository resultRepository,
                              StudentAnswerRepository studentAnswerRepository,
@@ -37,6 +38,7 @@ public class ResultServiceImpl implements ResultService {
         this.userRepository = userRepository;
         this.assessmentRepository = assessmentRepository;
         this.streamRepository = streamRepository;
+       
     }
 
  
@@ -71,11 +73,11 @@ public class ResultServiceImpl implements ResultService {
 
         // Calculate Score and Total Marks
         int score = 0;
-        int totalMarks = 0;
+        int totalMarks = assessment.getTotalQuestions();
 
         for (StudentAnswer answer : studentAnswers) {
 
-            totalMarks += answer.getQuestion().getMarks();
+            
 
             if (answer.getSelectedOption().getIsCorrect()) {
                 score += answer.getQuestion().getMarks();
